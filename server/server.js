@@ -1,12 +1,10 @@
 const express = require('express');
-const morgan = require('morgan');
 const app=express();
+const cors=require('cors');
 
-app.use(morgan('dev'))
-app.use((req,res,next)=>{
-    console.log('Making a middleware');
-    next();
-});
+app.use(cors())
+app.use( express.urlencoded({ extended: true }) )
+app.use(express.json());
 app.get("/api/v1/restaurants",(req,res)=>{
     res.status(200).json({
         status:"success",
@@ -15,12 +13,17 @@ app.get("/api/v1/restaurants",(req,res)=>{
     }});
 })
 
-app.get("api/v1/restaurants/:id",(req,res)=>(
-    console.log(req.params)
-))
+app.get("/api/v1/restaurants/:id",(req,res)=>{
+    console.log(req.params,req.body);
+    res.status(200).json({
+        status:"success",
+    data:{
+        restaurant:['Mcdonalds','BurgerFarm']
+    }})
+})
 
-app.post("api/v1/restaurants",(req,res)=>{
-    console.log(req)
+app.post("/api/v1/restaurants",(req,res)=>{
+    console.log(req.body)
 })
 
 app.put("api/v1/restaurants/:id",(req,res)=>{
