@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Header from "../components/Header"
 import AddRestaurant from "../components/AddRestaurant"
+import RestaurantList from "../components/RestaurantList"
 export default function Home() {
   return (
     <div className="">
@@ -10,6 +11,7 @@ export default function Home() {
       </Head>
       <Header/>
       <AddRestaurant/>
+      <RestaurantList/>
     </div>
   )
 }

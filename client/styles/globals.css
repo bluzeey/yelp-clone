@@ -5,5 +5,11 @@
 @layer components {
     .Input{
         @apply border-2 px-5 py-2 border-gray-300 rounded;
+    },
+    .Cell{
+        @apply text-sm text-white font-medium px-6 py-4 whitespace-nowrap;
+    }
+    .Row{
+        @apply border-b bg-gray-800 border-gray-900
     }
 }
