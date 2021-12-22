@@ -10,7 +10,6 @@ app.use(express.json());
 app.get("/api/v1/restaurants",async(req,res)=>{
     try {
         const results=await db.query("select * from restaurants");
-        console.log(results)
         res.status(200).json({
             status:"success",
             results: results.rows.length,
@@ -24,9 +23,7 @@ app.get("/api/v1/restaurants",async(req,res)=>{
 
 app.get("/api/v1/restaurants/:id",async(req,res)=>{
     try {
-        console.log(req.params,req.body);
         const results=await db.query(`select * from restaurants where id=$1`,[req.params.id])
-        console.log(results)
         res.status(200).json({
             status:"success",
         data:{
@@ -55,7 +52,6 @@ app.post("/api/v1/restaurants",async(req,res)=>{
 app.put("/api/v1/restaurants/:id",async(req,res)=>{
      try {
          const results=await db.query("UPDATE restaurants SET name =$1 , location =$2 , price_range =$3 WHERE id=$4 returning *",[req.body.name,req.body.location,req.body.price_range,req.params.id])
-         console.log(results)
          res.status(201).json({
              status:"success",
              data:{
