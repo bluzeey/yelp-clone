@@ -1,11 +1,19 @@
+import {useState} from 'react'
 function AddRestaurant() {
+    const [name,setName]=useState('')
+    const [location,setLocation]=useState('')
+    const [priceRange,setPriceRange]=useState('Price Range')
+
     return (
-        <div className="p-4 ">
+        <div className="p-4">
             <form>
                 <div className="flex justify-around max-w-4xl m-auto">
-                        <input type="text" className="Input" placeholder="Name"/>
-                        <input type="text" className="Input" placeholder="Location"/>
-                        <select className="Input">
+                        <input value={name} onChange={(e)=>setName(e.target.value)} type="text" className="Input" placeholder="Name"/>
+                        <input value={location} onChange={(e)=>setLocation(e.target.value)} type="text" className="Input" placeholder="Location"/>
+                        <select 
+                        value={priceRange}
+                        onChange={(e)=>setPriceRange(e.target.value)}
+                        className="Input">
                             <option disabled>Price_range</option>
                             <option value="1">$</option>
                             <option value="2">$$</option>
