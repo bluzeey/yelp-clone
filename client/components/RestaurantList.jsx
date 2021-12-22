@@ -1,8 +1,20 @@
 import {useEffect,useContext} from 'react';
 import { RestaurantContext } from '../context/RestaurantContext';
 import RestaurantApi from '../pages/api/restaurantProvider'
+import {useRouter} from 'next/router'
+
 function RestaurantList() {
+    const router=useRouter()
     const {restaurants,setRestaurants} =useContext(RestaurantContext)
+    const deleteRestaurant=async(id)=>{
+        try {
+            const response=await RestaurantApi.delete(`/${id}`)
+            console.log(response)
+            setRestaurants(restaurants.filter(r => r.id !== id))
+        } catch (error) {
+            console.log(error)
+        }  
+    }
     useEffect(()=>{
         const fetchData=async()=>{
             try {
@@ -58,11 +70,15 @@ function RestaurantList() {
                                 <td className="py-4 px-6 text-sm  whitespace-nowrap text-gray-400">
                                     No Reviews
                                 </td>
-                                <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                    <a href="#" className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">Update</a>
+                                <td>
+                                   <button onClick={()=>router.push(`restaurants/${restaurant.id}/update`)} className="py-2 px-6 text-sm text-white bg-yellow-500 font-medium text-right rounded whitespace-nowrap cursor-pointer">
+                                       Update 
+                                   </button>
                                 </td>
-                                <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                    <a href="#" className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">Delete</a>
+                                <td >
+                                   <button onClick={()=>{deleteRestaurant(restaurant.id)}} className="py-2 px-6 text-sm text-white bg-red-600 font-medium rounded text-right whitespace-nowrap cursor-pointer">
+                                       Delete
+                                   </button>
                                 </td>
                             </tr> 
                             ))} 
