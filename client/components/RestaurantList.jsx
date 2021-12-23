@@ -35,7 +35,7 @@ function RestaurantList() {
                     <table className="min-w-full">
                         <thead className="bg-blue-700 ">
                             <tr>
-                                <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-white uppercase dark:text-gray-400">
+                                <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-white uppercase dark:text-gray-400 ">
                                     Restaurant
                                 </th>
                                 <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-white uppercase dark:text-gray-400">
@@ -58,7 +58,8 @@ function RestaurantList() {
                         <tbody>
                              {restaurants && restaurants.map(restaurant =>(
                              <tr key={restaurant.id} className="bg-gray-800 border-gray-700">
-                                <td className="py-4 px-6 text-sm font-medium whitespace-nowrap text-white">
+                                <td onClick={()=>{router.push('/restaurants/'+restaurant.id)}}
+                                className="py-4 px-6 text-sm font-medium whitespace-nowrap text-white cursor-pointer">
                                     {restaurant.name}
                                 </td>
                                 <td className="py-4 px-6 text-sm  whitespace-nowrap text-gray-400">
