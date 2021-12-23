@@ -1,11 +1,13 @@
-import {useEffect,useContext} from 'react';
+import {useEffect,useContext,useState} from 'react';
 import { RestaurantContext } from '../context/RestaurantContext';
 import RestaurantApi from '../pages/api/restaurantProvider'
 import {useRouter} from 'next/router'
+import StarRating from './StarRating'
 
 function RestaurantList() {
     const router=useRouter()
     const {restaurants,setRestaurants} =useContext(RestaurantContext)
+    const [reviews,setReviews]=useState([])
     const deleteRestaurant=async(id)=>{
         try {
             const response=await RestaurantApi.delete(`/${id}`)
@@ -21,6 +23,8 @@ function RestaurantList() {
                const response=await RestaurantApi.get("/")
                console.log(response)
                setRestaurants(response.data.data.restaurant)
+               setReviews(response.data.data.reviews)
+               console.log(reviews?.[0])
             } catch (error) {
                 console.log(error)
             }
@@ -56,7 +60,7 @@ function RestaurantList() {
                             </tr>
                         </thead>
                         <tbody>
-                             {restaurants && restaurants.map(restaurant =>(
+                             {restaurants && restaurants.map((restaurant,i) =>(
                              <tr key={restaurant.id} className="bg-gray-800 border-gray-700">
                                 <td onClick={()=>{router.push('/restaurants/'+restaurant.id)}}
                                 className="py-4 px-6 text-sm font-medium whitespace-nowrap text-white cursor-pointer">
@@ -68,9 +72,12 @@ function RestaurantList() {
                                 <td className="py-4 px-6 text-sm  whitespace-nowrap text-gray-400">
                                     {"$".repeat(restaurant.price_range)}
                                 </td>
-                                <td className="py-4 px-6 text-sm  whitespace-nowrap text-gray-400">
-                                    No Reviews
-                                </td>
+                                {reviews?.[i] ? (<td className="py-4 px-6 text-sm  whitespace-nowrap text-gray-400">
+                                    <StarRating rating={reviews?.[i]?.avg}/>({reviews?.[i]?.count})
+                                </td>):(
+                                    <td className="py-4 px-6 text-sm  whitespace-nowrap text-gray-400">No Reviews</td>
+                                )}
+                                
                                 <td>
                                    <button onClick={()=>router.push(`restaurants/${restaurant.id}/update`)} className="py-2 px-6 text-sm text-white bg-yellow-500 font-medium text-right rounded whitespace-nowrap cursor-pointer">
                                        Update 

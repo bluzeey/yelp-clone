@@ -10,16 +10,30 @@ function index({props}) {
     const [name, setName] = useState('')
     const [rating, setRating] = useState('Set Rating')
     const [review, setReview] = useState('')
+    const [avgRating,setAvgRating]=useState(0)
     const submitReview=async(e)=>{
-           e.preventDefault();
-           const response=await
+           try {
+               e.preventDefault();
+               const response=await restaurantApi.post(`/${props}/addReview`,{
+                   restaurant_id:props,
+                   name,
+                   review,
+                   rating,
+               })
+               setSelectedRestaurantReview([...selectedRestaurantReview,{restaurant_id:props,name,review,rating}])
+               setName('')
+               setRating('Set Rating')
+               setReview('')
+           } catch (error) {
+               console.log(error)
+           }
     }
     useEffect(()=>{
         const fetchData=async()=>{
             const response=await restaurantApi.get(`/${props}`)
-            console.log(response)
             setSelectedRestaurant(response.data.data.restaurant)
             setSelectedRestaurantReview(response.data.data.reviews)
+            setAvgRating(response.data.data.avgReview.avg)
         }
         fetchData();
     },[])
@@ -28,8 +42,8 @@ function index({props}) {
             {selectedRestaurant && (
                     <div>
                         <p className="text-6xl text-center">{selectedRestaurant.name}</p>
-                        <div className="mt-5 text-center"><StarRating rating={3}/>({selectedRestaurantReview.length})</div>
-                        <div className="flex">
+                        <div className="mt-5 text-center"><StarRating rating={avgRating}/>({selectedRestaurantReview.length})</div>
+                        <div className="grid grid-cols-3">
                         {selectedRestaurantReview &&
                          (selectedRestaurantReview.map((review) =>(
                             <div key={review.id} className="bg-blue-500 w-1/3 m-4 rounded box-border">
